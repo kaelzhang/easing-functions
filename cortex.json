@@ -1,6 +1,6 @@
 // You could write comments in cortex.json.
 {
-  "name": "easing-functions",
+  "name": "easin",
   "version": "0.1.0",
   "description": "Robert Penner's easing functions",
   "main": "index.js",
@@ -41,7 +41,7 @@
   //   "src": "src"
   // },
 
-  "repository": "git://github.com/kaelzhang/easing-functions.git",
+  "repository": "git://github.com/kaelzhang/easin.git",
   "keywords": [
     "easing",
     "functions",
@@ -56,7 +56,7 @@
     "email": "i@kael.me"
   },
   "bugs": {
-    "url": "http://github.com/kaelzhang/easing-functions/issues"
+    "url": "http://github.com/kaelzhang/easin/issues"
   },
-  "homepage": "http://github.com/kaelzhang/easing-functions"
+  "homepage": "http://github.com/kaelzhang/easin"
 }
