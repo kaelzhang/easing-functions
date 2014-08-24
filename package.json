@@ -1,0 +1,24 @@
+{
+  "name": "easing-functions",
+  "version": "0.1.0",
+  "description": "Robert Penner's easing functions",
+  "main": "index.js",
+  "repository": "git://github.com/kaelzhang/easing-functions.git",
+  "keywords": [
+    "easing",
+    "functions",
+    "equations",
+    "robert",
+    "penner",
+    "animation"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "kael",
+    "email": "i@kael.me"
+  },
+  "bugs": {
+    "url": "http://github.com/kaelzhang/easing-functions/issues"
+  },
+  "homepage": "http://github.com/kaelzhang/easing-functions"
+}
