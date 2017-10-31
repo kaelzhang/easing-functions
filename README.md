@@ -5,14 +5,15 @@ Robert Penner&#39;s easing functions from [phaser](https://github.com/photonstor
 ## Install
 
 ```bash
-$ cortex install easin --save
+$ npm i easing-functions
 ```
-
 
 ## Usage
 
 ```js
-var Easing = require('easin');
+import Easing from 'easing-functions'
+
+const QO = Easing.Quadratic.Out
 ```
 
 ## Easing.&lt;type&gt;.&lt;output&gt;(x)

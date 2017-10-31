@@ -1,6 +1,6 @@
 {
-  "name": "easin",
-  "version": "0.1.0",
+  "name": "easing-functions",
+  "version": "1.0.0",
   "description": "Robert Penner's easing functions",
   "main": "index.js",
   "repository": "git://github.com/kaelzhang/easin.git",
