@@ -13,7 +13,8 @@ $ npm i easing-functions
 ```js
 const Easing = require('easing-functions')
 
-const QO = Easing.Quadratic.Out
+Easing.Quadratic.Out
+Easing.quadratic.out
 
 // You could also access the easing function via
 

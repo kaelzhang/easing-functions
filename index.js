@@ -1,7 +1,7 @@
 // Linear easing.
 //
 // @class Easing.Linear
-const linear = k => k
+const Linear = k => k
 
 // Quadratic easing.
 //
@@ -434,65 +434,37 @@ const Bounce = {
 }
 
 const Easing = {
-  linear,
-
-  quadratic: Quadratic,
-  'quadratic.in': Quadratic.In,
-  'quadratic.out': Quadratic.Out,
-  'quadratic.inout': Quadratic.InOut,
-
-  cubic: Cubic,
-  'cubic.in': Cubic.In,
-  'cubic.out': Cubic.Out,
-  'cubic.inout': Cubic.InOut,
-
-  quartic: Quartic,
-  'quartic.in': Quartic.In,
-  'quartic.out': Quartic.Out,
-  'quartic.inout': Quartic.InOut,
-
-  quintic: Quintic,
-  'quintic.in': Quintic.In,
-  'quintic.out': Quintic.Out,
-  'quintic.inout': Quintic.InOut,
-
-  sinusoidal: Sinusoidal,
-  'sinusoidal.in': Sinusoidal.In,
-  'sinusoidal.out': Sinusoidal.Out,
-  'sinusoidal.inout': Sinusoidal.InOut,
-
-  exponential: Exponential,
-  'exponential.in': Exponential.In,
-  'exponential.out': Exponential.Out,
-  'exponential.inout': Exponential.InOut,
-
-  circular: Circular,
-  'circular.in': Circular.In,
-  'circular.out': Circular.Out,
-  'circular.inout': Circular.InOut,
-
-  elastic: Elastic,
-  'elastic.in': Elastic.In,
-  'elastic.out': Elastic.Out,
-  'elastic.inout': Elastic.InOut,
-
-  back: Back,
-  'back.in': Back.In,
-  'back.out': Back.Out,
-  'back.inout': Back.InOut,
-
-  bounce: Bounce,
-  'bounce.in': Bounce.In,
-  'bounce.out': Bounce.Out,
-  'bounce.inout': Bounce.InOut
+  Quadratic,
+  Cubic,
+  Quartic,
+  Quintic,
+  Sinusoidal,
+  Exponential,
+  Circular,
+  Elastic,
+  Back,
+  Bounce,
 }
 
+for (const key of Object.keys(Easing)) {
+  const obj = Easing[key]
+  const lowerKey = key.toLowerCase()
+  Easing[lowerKey] = obj
 
-// Create a proxy for Easing so that when we access `Easing['Quadratic.In']`,
-// it will fallback to the value of lowercased property, `Easing[quadratic.in]`.
-module.exports = new Proxy(Easing, {
-  get (target, prop) {
-    if (prop in target) return target[prop]
-    return target[prop.toLowerCase()]
+  for (const prop of Object.keys(obj)) {
+    const fn = obj[prop]
+    const lowerProp = prop.toLowerCase()
+
+    // Easing['Quadratic.In']
+    Easing[`${key}.${prop}`] = fn
+
+    // Easing['quadratic.in']
+    Easing[`${lowerKey}.${lowerProp}`] = fn
+    obj[lowerProp] = fn
   }
-})
+}
+
+Easing.Linear = Linear
+Easing.linear = Linear
+
+module.exports = Easing
