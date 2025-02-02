@@ -1,6 +1,6 @@
 {
   "name": "easing-functions",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Robert Penner's easing functions",
   "main": "index.js",
   "files": [

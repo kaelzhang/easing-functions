@@ -446,25 +446,30 @@ const Easing = {
   Bounce,
 }
 
+const define = (obj, key, value) => Object.defineProperty(obj, key, {
+  value
+})
+
+
 for (const key of Object.keys(Easing)) {
   const obj = Easing[key]
   const lowerKey = key.toLowerCase()
-  Easing[lowerKey] = obj
+  define(Easing, lowerKey, obj)
 
   for (const prop of Object.keys(obj)) {
     const fn = obj[prop]
     const lowerProp = prop.toLowerCase()
 
     // Easing['Quadratic.In']
-    Easing[`${key}.${prop}`] = fn
+    define(Easing, `${key}.${prop}`, fn)
 
     // Easing['quadratic.in']
-    Easing[`${lowerKey}.${lowerProp}`] = fn
-    obj[lowerProp] = fn
+    define(Easing, `${lowerKey}.${lowerProp}`, fn)
+    define(obj, lowerProp, fn)
   }
 }
 
 Easing.Linear = Linear
-Easing.linear = Linear
+define(Easing, 'linear', Linear)
 
 module.exports = Easing
