@@ -1,18 +1,7 @@
 // Linear easing.
 //
 // @class Easing.Linear
-const Linear = {
-
-  // Ease-in.
-  //
-  // @method Easing.Linear#In
-  // @param {number} k - The value to be tweened.
-  // @returns {number} k^2.
-  None (k) {
-    return k
-  }
-
-}
+const linear = k => k
 
 // Quadratic easing.
 //
@@ -32,7 +21,7 @@ const Quadratic = {
   //
   // @method Easing.Quadratic#Out
   // @param {number} k - The value to be tweened.
-  // @returns {number} k* (2-k).
+  // @returns {number} k * (2 - k).
   Out (k) {
     return k * (2 - k)
   },
@@ -43,8 +32,12 @@ const Quadratic = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   InOut (k) {
-    if ((k *= 2) < 1) return 0.5 * k * k
-    return - 0.5 * (-- k * (k - 2) - 1)
+    let dk = k * 2
+    if (dk < 1) {
+      return 0.5 * dk * dk
+    }
+    dk -= 1
+    return - 0.5 * (dk * (dk - 2) - 1)
   }
 
 }
@@ -78,8 +71,12 @@ const Cubic = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   InOut (k) {
-    if ((k *= 2) < 1) return 0.5 * k * k * k
-    return 0.5 * ((k -= 2) * k * k + 2)
+    let dk = k * 2
+    if (dk < 1) {
+      return 0.5 * dk * dk * dk
+    }
+    dk -= 2
+    return 0.5 * (dk * dk * dk + 2)
   }
 
 }
@@ -113,8 +110,12 @@ const Quartic = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   InOut (k) {
-    if ((k *= 2) < 1) return 0.5 * k * k * k * k
-    return - 0.5 * ((k -= 2) * k * k * k - 2)
+    let dk = k * 2
+    if (dk < 1) {
+      return 0.5 * dk * dk * dk * dk
+    }
+    dk -= 2
+    return - 0.5 * (dk * dk * dk * dk - 2)
   }
 
 }
@@ -148,8 +149,12 @@ const Quintic = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   InOut (k) {
-    if ((k *= 2) < 1) return 0.5 * k * k * k * k * k
-    return 0.5 * ((k -= 2) * k * k * k * k + 2)
+    let dk = k * 2
+    if (dk < 1) {
+      return 0.5 * dk * dk * dk * dk * dk
+    }
+    dk -= 2
+    return 0.5 * (dk * dk * dk * dk * dk + 2)
   }
 
 }
@@ -199,7 +204,7 @@ const Exponential = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   In (k) {
-    return k === 0 ? 0 : Math.pow(1024, k - 1)
+    return k === 0 ? 0 : 1024 ** (k - 1)
   },
 
   // Exponential ease-out.
@@ -208,7 +213,7 @@ const Exponential = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   Out (k) {
-    return k === 1 ? 1 : 1 - Math.pow(2, - 10 * k)
+    return k === 1 ? 1 : 1 - (2 ** (- 10 * k))
   },
 
   // Exponential ease-in/out.
@@ -219,8 +224,11 @@ const Exponential = {
   InOut (k) {
     if (k === 0) return 0
     if (k === 1) return 1
-    if ((k *= 2) < 1) return 0.5 * Math.pow(1024, k - 1)
-    return 0.5 * (- Math.pow(2, - 10 * (k - 1)) + 2)
+    const dk = k * 2
+    if (dk < 1) {
+      return 0.5 * (1024 ** (dk - 1))
+    }
+    return 0.5 * (- (2 ** (- 10 * (dk - 1))) + 2)
   }
 
 }
@@ -254,8 +262,12 @@ const Circular = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   InOut (k) {
-    if ((k *= 2) < 1) return - 0.5 * (Math.sqrt(1 - k * k) - 1)
-    return 0.5 * (Math.sqrt(1 - (k -= 2) * k) + 1)
+    let dk = k * 2
+    if (dk < 1) {
+      return - 0.5 * (Math.sqrt(1 - dk * dk) - 1)
+    }
+    dk -= 2
+    return 0.5 * (Math.sqrt(1 - dk * dk) + 1)
   }
 
 }
@@ -271,12 +283,19 @@ const Elastic = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   In (k) {
-    let s; let a = 0.1; const
-      p = 0.4
+    let a = 0.1
+    const p = 0.4
+    let s
     if (k === 0) return 0
     if (k === 1) return 1
-    if (!a || a < 1) { a = 1; s = p / 4 } else s = p * Math.asin(1 / a) / (2 * Math.PI)
-    return - (a * Math.pow(2, 10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p))
+    if (a < 1) {
+      a = 1
+      s = p / 4
+    } else {
+      s = p * Math.asin(1 / a) / (2 * Math.PI)
+    }
+    k -= 1
+    return - (a * (2 ** (10 * k)) * Math.sin((k - s) * (2 * Math.PI) / p))
   },
 
   // Elastic ease-out.
@@ -285,12 +304,18 @@ const Elastic = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   Out (k) {
-    let s; let a = 0.1; const
-      p = 0.4
+    let a = 0.1
+    const p = 0.4
+    let s
     if (k === 0) return 0
     if (k === 1) return 1
-    if (!a || a < 1) { a = 1; s = p / 4 } else s = p * Math.asin(1 / a) / (2 * Math.PI)
-    return (a * Math.pow(2, - 10 * k) * Math.sin((k - s) * (2 * Math.PI) / p) + 1)
+    if (a < 1) {
+      a = 1
+      s = p / 4
+    } else {
+      s = p * Math.asin(1 / a) / (2 * Math.PI)
+    }
+    return (a * (2 ** (- 10 * k)) * Math.sin((k - s) * (2 * Math.PI) / p) + 1)
   },
 
   // Elastic ease-in/out.
@@ -299,13 +324,24 @@ const Elastic = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   InOut (k) {
-    let s; let a = 0.1; const
-      p = 0.4
+    let a = 0.1
+    const p = 0.4
+    let s
     if (k === 0) return 0
     if (k === 1) return 1
-    if (!a || a < 1) { a = 1; s = p / 4 } else s = p * Math.asin(1 / a) / (2 * Math.PI)
-    if ((k *= 2) < 1) return - 0.5 * (a * Math.pow(2, 10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p))
-    return a * Math.pow(2, - 10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p) * 0.5 + 1
+    if (a < 1) {
+      a = 1
+      s = p / 4
+    } else {
+      s = p * Math.asin(1 / a) / (2 * Math.PI)
+    }
+    const dk = k * 2
+    if (dk < 1) {
+      const kInner = dk - 1
+      return - 0.5 * (a * (2 ** (10 * kInner)) * Math.sin((kInner - s) * (2 * Math.PI) / p))
+    }
+    const kInner = dk - 1
+    return a * (2 ** (- 10 * kInner)) * Math.sin((kInner - s) * (2 * Math.PI) / p) * 0.5 + 1
   }
 
 }
@@ -342,8 +378,12 @@ const Back = {
   // @returns {number} The tweened value.
   InOut (k) {
     const s = 1.70158 * 1.525
-    if ((k *= 2) < 1) return 0.5 * (k * k * ((s + 1) * k - s))
-    return 0.5 * ((k -= 2) * k * ((s + 1) * k + s) + 2)
+    let dk = k * 2
+    if (dk < 1) {
+      return 0.5 * (dk * dk * ((s + 1) * dk - s))
+    }
+    dk -= 2
+    return 0.5 * (dk * dk * ((s + 1) * dk + s) + 2)
   }
 
 }
@@ -368,15 +408,17 @@ const Bounce = {
   // @param {number} k - The value to be tweened.
   // @returns {number} The tweened value.
   Out (k) {
-    if (k < (1 / 2.75)) {
+    if (k < 1 / 2.75) {
       return 7.5625 * k * k
-    } if (k < (2 / 2.75)) {
-      return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75
-    } if (k < (2.5 / 2.75)) {
-      return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375
+    } if (k < 2 / 2.75) {
+      const k2 = k - (1.5 / 2.75)
+      return 7.5625 * k2 * k2 + 0.75
+    } if (k < 2.5 / 2.75) {
+      const k2 = k - (2.25 / 2.75)
+      return 7.5625 * k2 * k2 + 0.9375
     }
-
-    return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375
+    const k2 = k - (2.625 / 2.75)
+    return 7.5625 * k2 * k2 + 0.984375
   },
 
   // Bounce ease-in/out.
@@ -390,3 +432,67 @@ const Bounce = {
   }
 
 }
+
+const Easing = {
+  linear,
+
+  quadratic: Quadratic,
+  'quadratic.in': Quadratic.In,
+  'quadratic.out': Quadratic.Out,
+  'quadratic.inout': Quadratic.InOut,
+
+  cubic: Cubic,
+  'cubic.in': Cubic.In,
+  'cubic.out': Cubic.Out,
+  'cubic.inout': Cubic.InOut,
+
+  quartic: Quartic,
+  'quartic.in': Quartic.In,
+  'quartic.out': Quartic.Out,
+  'quartic.inout': Quartic.InOut,
+
+  quintic: Quintic,
+  'quintic.in': Quintic.In,
+  'quintic.out': Quintic.Out,
+  'quintic.inout': Quintic.InOut,
+
+  sinusoidal: Sinusoidal,
+  'sinusoidal.in': Sinusoidal.In,
+  'sinusoidal.out': Sinusoidal.Out,
+  'sinusoidal.inout': Sinusoidal.InOut,
+
+  exponential: Exponential,
+  'exponential.in': Exponential.In,
+  'exponential.out': Exponential.Out,
+  'exponential.inout': Exponential.InOut,
+
+  circular: Circular,
+  'circular.in': Circular.In,
+  'circular.out': Circular.Out,
+  'circular.inout': Circular.InOut,
+
+  elastic: Elastic,
+  'elastic.in': Elastic.In,
+  'elastic.out': Elastic.Out,
+  'elastic.inout': Elastic.InOut,
+
+  back: Back,
+  'back.in': Back.In,
+  'back.out': Back.Out,
+  'back.inout': Back.InOut,
+
+  bounce: Bounce,
+  'bounce.in': Bounce.In,
+  'bounce.out': Bounce.Out,
+  'bounce.inout': Bounce.InOut
+}
+
+
+// Create a proxy for Easing so that when we access `Easing['Quadratic.In']`,
+// it will fallback to the value of lowercased property, `Easing[quadratic.in]`.
+module.exports = new Proxy(Easing, {
+  get (target, prop) {
+    if (prop in target) return target[prop]
+    return target[prop.toLowerCase()]
+  }
+})
