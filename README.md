@@ -1,6 +1,6 @@
-# easin
+# easing-functions
 
-Robert Penner&#39;s easing functions from [phaser](https://github.com/photonstorm/phaser).
+Robert Penner's easing functions from [phaser](https://github.com/photonstorm/phaser).
 
 ## Install
 
@@ -36,5 +36,3 @@ Bounce        |   ✓  |   ✓   |   ✓     |   x
 ## License
 
 The MIT License
-
-- (c) 2014 Phaser.io

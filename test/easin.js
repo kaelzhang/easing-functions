@@ -1,12 +1,10 @@
-'use strict';
-
-var easing_functions = require('../index');
+const assert = require('assert')
+const easing_functions = require('../index')
 
 // To know the usage of `assert`, see: http://nodejs.org/api/assert.html
-var assert = require('assert');
 
-describe("description", function(){
-  it("should do blah blah blah", function(){
+describe('description', () => {
+  it('should do blah blah blah', () => {
     // your code...
-  });
-});
+  })
+})

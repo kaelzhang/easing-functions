@@ -1,8 +1,11 @@
 {
   "name": "easing-functions",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Robert Penner's easing functions",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "repository": "git://github.com/kaelzhang/easing-functions.git",
   "keywords": [
     "easing",
@@ -12,6 +15,16 @@
     "penner",
     "animation"
   ],
+  "scripts": {
+    "test": "NODE_DEBUG=screen-master nyc ava --timeout=10s --verbose",
+    "test:dev": "NODE_DEBUG=screen-master nyc ava --timeout=10s --verbose && npm run report:dev",
+    "lint": "eslint .",
+    "fix": "eslint . --fix",
+    "// posttest": "npm run report",
+    "report": "nyc report --reporter=text-lcov > coverage.lcov",
+    "report:dev": "nyc report --reporter=html && npm run report:open",
+    "report:open": "open coverage/index.html"
+  },
   "license": "MIT",
   "author": {
     "name": "kael",
@@ -20,5 +33,13 @@
   "bugs": {
     "url": "http://github.com/kaelzhang/easing-functions/issues"
   },
-  "homepage": "http://github.com/kaelzhang/easing-functions"
+  "homepage": "http://github.com/kaelzhang/easing-functions",
+  "devDependencies": {
+    "@ostai/eslint-config": "^3.5.0",
+    "ava": "^4.0.0",
+    "electron": "^34.0.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.2",
+    "nyc": "^15.0.1"
+  }
 }
