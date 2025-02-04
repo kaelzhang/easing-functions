@@ -1,10 +1,11 @@
 /*
  * This file draws 31 graphs (one Linear and 3 each for Quadratic, Cubic, Quartic,
  * Quintic, Sinusoidal, Exponential, Circular, Elastic, Back, and Bounce).
- * Each canvas plots the easing function from (0,0) to (1,1) with the y-axis
- * showing the function's value.
+ * Each canvas plots the easing function from (0,0) to (1,1), but now the
+ * y-axis is re-scaled based on the actual sampled minimum and maximum values,
+ * with a small margin. This lets you see parts of the curve that overflow the
+ * original [0,1] range.
  */
-
 
 (function run () {
   // Build an array of graph objects with label and easing function.
@@ -37,15 +38,38 @@
     ctx.fillStyle = '#fff'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // Helper: convert normalized [0,1] coordinate to canvas pixel coordinate.
+    // Sample the function at discrete steps.
+    const steps = 100
+    const samples = []
+    for (let i = 0; i <= steps; i ++) {
+      const progress = i / steps
+      samples.push({x: progress, y: fn(progress)})
+    }
+
+    // Compute the minimum and maximum y-values from the samples.
+    let yMin = samples[0].y
+    let yMax = samples[0].y
+    for (let i = 1; i < samples.length; i ++) {
+      if (samples[i].y < yMin) yMin = samples[i].y
+      if (samples[i].y > yMax) yMax = samples[i].y
+    }
+    // Add a margin (10% of the range) to ensure overflow is visible.
+    let margin = (yMax - yMin) * 0.1
+    if (margin === 0) margin = 0.1  // in case the function is constant.
+    const yLow = yMin - margin
+    const yHigh = yMax + margin
+
+    // Helper: convert from data (x, y) to canvas pixel coordinates.
+    // x is always in [0, 1]. y is scaled from [yLow, yHigh] so that the full range
+    // is visible.
     function toCanvas (x, y) {
       return {
         x: x * canvas.width,
-        y: canvas.height - y * canvas.height // flip y so that (0,0) is at bottom left.
+        y: canvas.height - ((y - yLow) / (yHigh - yLow)) * canvas.height
       }
     }
 
-    // Draw a light border (graph area).
+    // Draw a light border.
     ctx.strokeStyle = '#ddd'
     ctx.lineWidth = 1
     ctx.strokeRect(0, 0, canvas.width, canvas.height)
@@ -54,18 +78,15 @@
     ctx.strokeStyle = '#007acc'
     ctx.lineWidth = 2
     ctx.beginPath()
-    const start = toCanvas(0, fn(0))
-    ctx.moveTo(start.x, start.y)
-    const steps = 100
-    for (let i = 1; i <= steps; i ++) {
-      const progress = i / steps
-      const yVal = fn(progress)
-      const pt = toCanvas(progress, yVal)
+    let pt = toCanvas(samples[0].x, samples[0].y)
+    ctx.moveTo(pt.x, pt.y)
+    for (let i = 1; i < samples.length; i ++) {
+      pt = toCanvas(samples[i].x, samples[i].y)
       ctx.lineTo(pt.x, pt.y)
     }
     ctx.stroke()
 
-    // Draw a dashed diagonal reference from (0,0) to (1,1).
+    // Draw a dashed diagonal reference for the line y = x.
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)'
     ctx.lineWidth = 1
     ctx.setLineDash([5, 5])
