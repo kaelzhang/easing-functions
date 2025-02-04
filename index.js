@@ -450,7 +450,6 @@ const define = (obj, key, value) => Object.defineProperty(obj, key, {
   value
 })
 
-
 for (const key of Object.keys(Easing)) {
   const obj = Easing[key]
   const lowerKey = key.toLowerCase()
@@ -473,3 +472,7 @@ Easing.Linear = Linear
 define(Easing, 'linear', Linear)
 
 module.exports = Easing
+
+if (typeof window !== 'undefined') {
+  window.Easing = Easing
+}

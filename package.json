@@ -23,7 +23,8 @@
     "// posttest": "npm run report",
     "report": "nyc report --reporter=text-lcov > coverage.lcov",
     "report:dev": "nyc report --reporter=html && npm run report:open",
-    "report:open": "open coverage/index.html"
+    "report:open": "open coverage/index.html",
+    "graph": "python -m http.server && open http://localhost:8000/graph/"
   },
   "license": "MIT",
   "author": {
